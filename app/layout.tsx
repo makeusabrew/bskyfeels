@@ -3,7 +3,7 @@ import './globals.css'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'Bluesky Mood',
+  title: 'Bluesky Feels',
   description: 'Bluesky is feeling...',
 }
 
