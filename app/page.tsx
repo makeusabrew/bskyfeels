@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { MoodEngine } from './lib/mood-engine'
-import { Mood, MoodStats } from './lib/types'
+import { Mood, MoodStats, WebSocketStatus } from './lib/types'
 import MoodDisplay from './components/MoodDisplay'
 import StatusDisplay from './components/StatusDisplay'
 
 export default function BlueSkyMood() {
   const [mood, setMood] = useState<Mood>({ score: 0, description: 'Neutral' })
+  const [wsStatus, setWsStatus] = useState<WebSocketStatus>('disconnected')
   const [stats, setStats] = useState<MoodStats>({
     totalPosts: 0,
     totalEmojis: 0,
@@ -33,7 +34,7 @@ export default function BlueSkyMood() {
       if (engineRef.current) {
         setStats(engineRef.current.getMoodStats())
       }
-    })
+    }, setWsStatus)
 
     // Initialize engine with canvas references
     const cleanup = engineRef.current.init({
@@ -56,7 +57,7 @@ export default function BlueSkyMood() {
           <MoodDisplay mood={mood} />
         </div>
 
-        <StatusDisplay stats={stats} />
+        <StatusDisplay stats={stats} wsStatus={wsStatus} />
       </div>
     </div>
   )

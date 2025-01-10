@@ -1,4 +1,4 @@
-import { CanvasRefs, JetstreamEvent, Mood } from './types'
+import { CanvasRefs, JetstreamEvent, Mood, WebSocketStatus } from './types'
 import { emojis } from './emoji-data'
 import { BackgroundParticleSystem } from './particles/background-particles'
 import { EmojiParticleSystem } from './particles/emoji-particles'
@@ -16,10 +16,10 @@ export class MoodEngine {
   private canvases!: CanvasRefs
   private onMoodUpdate?: (mood: Mood) => void
 
-  constructor(onMoodUpdate?: (mood: Mood) => void) {
+  constructor(onMoodUpdate?: (mood: Mood) => void, onWebSocketStatusChange?: (status: WebSocketStatus) => void) {
     this.onMoodUpdate = onMoodUpdate
     this.moodCalculator = new MoodCalculator()
-    this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent)
+    this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent, onWebSocketStatusChange)
 
     // Initialize with neutral mood
     if (onMoodUpdate) {

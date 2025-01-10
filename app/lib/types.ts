@@ -61,3 +61,5 @@ export interface CanvasRefs {
   wave: HTMLCanvasElement
   emoji: HTMLCanvasElement
 }
+
+export type WebSocketStatus = 'connecting' | 'connected' | 'disconnected'

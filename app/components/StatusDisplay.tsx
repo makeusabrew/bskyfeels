@@ -1,12 +1,13 @@
 'use client'
 
-import type { MoodStats } from '../lib/types'
+import type { MoodStats, WebSocketStatus } from '../lib/types'
 
 interface StatusDisplayProps {
   stats: MoodStats
+  wsStatus?: WebSocketStatus
 }
 
-export default function StatusDisplay({ stats }: StatusDisplayProps) {
+export default function StatusDisplay({ stats, wsStatus }: StatusDisplayProps) {
   const emojiPercentage = stats.totalPosts > 0 ? (stats.totalEmojis / stats.totalPosts) * 100 : 0
   const positivePercentage = stats.totalEmojis > 0 ? (stats.positiveCount / stats.totalEmojis) * 100 : 0
   const neutralPercentage = stats.totalEmojis > 0 ? (stats.neutralCount / stats.totalEmojis) * 100 : 0
@@ -15,6 +16,22 @@ export default function StatusDisplay({ stats }: StatusDisplayProps) {
   return (
     <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 font-mono text-sm text-white/80">
       <div className="space-y-1">
+        {wsStatus && (
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-20">WebSocket:</span>
+            <span
+              className={`capitalize ${
+                wsStatus === 'connected'
+                  ? 'text-green-400'
+                  : wsStatus === 'connecting'
+                  ? 'text-yellow-400'
+                  : 'text-red-400'
+              }`}
+            >
+              {wsStatus}
+            </span>
+          </div>
+        )}
         <div className="flex items-center gap-2">
           <span className="w-20">Mood:</span>
           <span
