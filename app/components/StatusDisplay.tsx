@@ -17,9 +17,9 @@ export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDispla
   const negativePercentage = stats.totalEmojis > 0 ? (stats.negativeCount / stats.totalEmojis) * 100 : 0
 
   return (
-    <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 font-mono text-xs sm:text-sm text-white/80">
+    <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-3 font-mono text-xs sm:text-sm text-white/80">
       <div className="space-y-1">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-0 gap-3">
           <div className="flex items-center gap-2">
             <span className="w-20">WebSocket:</span>
             <span
@@ -34,7 +34,7 @@ export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDispla
               {wsStatus}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0">
             {onReset && (
               <button
                 onClick={onReset}
@@ -73,7 +73,7 @@ export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDispla
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`opacity-50 hover:opacity-100 transition-all transform ${isExpanded ? 'rotate-180' : ''}`}
+                className={`opacity-50 hover:opacity-100 transition-all transform ${!isExpanded ? 'rotate-180' : ''}`}
               >
                 <path d="m6 9 6 6 6-6" />
               </svg>

@@ -16,7 +16,7 @@ export function ThemeMenu({ onThemeChange, currentTheme }: ThemeMenuProps) {
     <div className="fixed top-4 right-4 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+        className="p-2 rounded-full bg-black/20 backdrop-blur-sm text-white/80 hover:bg-white/20 transition-all"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

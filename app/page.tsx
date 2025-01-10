@@ -98,7 +98,7 @@ export default function BlueSkyMood() {
         href="https://bsky.app/profile/makeusabrew.bsky.social"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 z-50 text-sm text-white/50 hover:text-white/90 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/10 px-3 py-1.5 rounded-full"
+        className="fixed top-4 left-4 z-50 text-sm text-white/60 hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-md"
       >
         <span>@makeusabrew</span>
       </a>
