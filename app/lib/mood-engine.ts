@@ -42,7 +42,7 @@ export class MoodEngine {
     this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent, onWebSocketStatusChange)
   }
 
-  init(canvasRefs: CanvasRefs) {
+  init(canvasRefs: CanvasRefs, waveRenderer: WaveRenderer) {
     this.canvases = canvasRefs
 
     // Initialize systems
@@ -52,9 +52,9 @@ export class MoodEngine {
     if (this.canvases.emoji) {
       this.emojiParticles = new EmojiParticleSystem(this.canvases.emoji)
     }
-    if (this.canvases.wave) {
-      this.waveRenderer = new WaveRenderer(this.canvases.wave)
-    }
+
+    // Use the provided WaveRenderer or create a new one
+    this.waveRenderer = waveRenderer
 
     // Set up resize handlers
     Object.values(this.canvases).forEach((canvas) => {

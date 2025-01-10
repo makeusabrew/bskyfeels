@@ -70,4 +70,4 @@ export interface WaveTheme {
   negative: string
 }
 
-export type WaveThemeName = 'classic' | 'purple-dream' | 'sunset' | 'ocean'
+export type WaveThemeName = 'classic' | 'purple-dream' | 'sunset' | 'ocean' | 'forest' | 'midnight' | 'aurora' | 'candy'

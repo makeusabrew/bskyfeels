@@ -1,6 +1,7 @@
-import { Mood, MoodStats } from './types'
+import { Mood, MoodStats, WaveThemeName } from './types'
 
 const STORAGE_KEY = 'bluesky-mood-stats'
+const THEME_KEY = 'bluesky-mood-theme'
 
 interface StoredStats {
   mood: Mood
@@ -11,6 +12,24 @@ interface StoredStats {
   negativeCount: number
   rawSentiment: number
   lastUpdated: number
+}
+
+export function saveTheme(theme: WaveThemeName) {
+  try {
+    localStorage.setItem(THEME_KEY, theme)
+  } catch (error) {
+    console.error('Failed to save theme to localStorage:', error)
+  }
+}
+
+export function loadTheme(): WaveThemeName | null {
+  try {
+    const theme = localStorage.getItem(THEME_KEY) as WaveThemeName
+    return theme || null
+  } catch (error) {
+    console.error('Failed to load theme from localStorage:', error)
+    return null
+  }
 }
 
 export function saveStats(mood: Mood, stats: MoodStats) {
