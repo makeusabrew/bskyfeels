@@ -1,7 +1,15 @@
+import { WaveTheme } from '../types'
+import { waveThemes } from '../wave-themes'
+
 export class WaveRenderer {
   private currentSentiment = 0
+  private currentTheme: WaveTheme = waveThemes.classic
 
   constructor(private canvas: HTMLCanvasElement) {}
+
+  setTheme(theme: WaveTheme) {
+    this.currentTheme = theme
+  }
 
   render(ctx: CanvasRenderingContext2D, timestamp: number, targetSentiment: number) {
     // Smooth transition for wave position
@@ -28,7 +36,7 @@ export class WaveRenderer {
     ctx.lineTo(this.canvas.width, this.canvas.height)
     ctx.lineTo(0, this.canvas.height)
     ctx.closePath()
-    ctx.fillStyle = 'rgba(251, 146, 60, 0.5)'
+    ctx.fillStyle = this.currentTheme.positive
     ctx.fill()
 
     // Fill top area (negative sentiment)
@@ -41,7 +49,7 @@ export class WaveRenderer {
     ctx.lineTo(this.canvas.width, 0)
     ctx.lineTo(0, 0)
     ctx.closePath()
-    ctx.fillStyle = 'rgba(45, 212, 191, 0.5)'
+    ctx.fillStyle = this.currentTheme.negative
     ctx.fill()
   }
 }

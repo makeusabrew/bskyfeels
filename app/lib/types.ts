@@ -63,3 +63,11 @@ export interface CanvasRefs {
 }
 
 export type WebSocketStatus = 'connecting' | 'connected' | 'disconnected'
+
+export interface WaveTheme {
+  name: string
+  positive: string
+  negative: string
+}
+
+export type WaveThemeName = 'classic' | 'purple-dream' | 'sunset' | 'ocean'
