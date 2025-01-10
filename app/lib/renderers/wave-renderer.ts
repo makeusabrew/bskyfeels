@@ -28,7 +28,7 @@ export class WaveRenderer {
     ctx.lineTo(this.canvas.width, this.canvas.height)
     ctx.lineTo(0, this.canvas.height)
     ctx.closePath()
-    ctx.fillStyle = 'rgba(147, 51, 234, 0.5)'
+    ctx.fillStyle = 'rgba(251, 146, 60, 0.5)'
     ctx.fill()
 
     // Fill top area (negative sentiment)
@@ -41,7 +41,7 @@ export class WaveRenderer {
     ctx.lineTo(this.canvas.width, 0)
     ctx.lineTo(0, 0)
     ctx.closePath()
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'
+    ctx.fillStyle = 'rgba(45, 212, 191, 0.5)'
     ctx.fill()
   }
 }
