@@ -15,7 +15,7 @@ export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDispla
   const negativePercentage = stats.totalEmojis > 0 ? (stats.negativeCount / stats.totalEmojis) * 100 : 0
 
   return (
-    <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 font-mono text-sm text-white/80">
+    <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 font-mono text-xs sm:text-sm text-white/80">
       <div className="space-y-1">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">

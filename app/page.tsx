@@ -54,7 +54,7 @@ export default function BlueSkyMood() {
   }, [])
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative">
+    <div className="h-screen w-screen overflow-hidden relative bg-stone-800">
       <canvas ref={backgroundRef} className="absolute inset-0" />
       <canvas ref={waveRef} className="absolute inset-0" />
       <canvas ref={emojiRef} className="absolute inset-0" />
