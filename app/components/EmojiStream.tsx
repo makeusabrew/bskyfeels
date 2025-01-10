@@ -1,32 +1,37 @@
-"use client"
+'use client'
 
 import { motion } from 'framer-motion'
 
 interface EmojiStreamProps {
-  emojiData: Array<{ emoji: string; sentiment: number }>
+  emojiData: Array<{ emoji: string; sentiment: number; id: number }>
 }
 
 export default function EmojiStream({ emojiData }: EmojiStreamProps) {
   return (
-    <div className="absolute inset-x-0 bottom-0 h-32 overflow-hidden">
-      <div className="relative w-full h-full">
-        {emojiData.map((data, index) => (
-          <motion.div
-            key={index}
-            className="absolute text-4xl"
-            initial={{ x: '100%' }}
-            animate={{ x: '-100%' }}
-            transition={{ duration: 10, ease: 'linear', delay: index * 0.5 }}
-            style={{ 
-              top: `${(1 - data.sentiment) * 50}%`,
-              zIndex: 10 // Ensure emojis are above the background
-            }}
-          >
-            {data.emoji}
-          </motion.div>
-        ))}
-      </div>
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 10 }}>
+      {emojiData.map((data) => (
+        <motion.div
+          key={data.id}
+          className="absolute text-4xl"
+          initial={{ x: '100vw' }}
+          animate={{ x: '-100vw' }}
+          exit={{ opacity: 0 }}
+          transition={{
+            x: {
+              duration: 15,
+              ease: 'linear',
+            },
+          }}
+          style={{
+            // Convert sentiment from [-1, 1] to [0, 1] for positioning
+            // and invert it because we want negative at top
+            top: `${((1 - data.sentiment) / 2) * 100}%`,
+            transform: 'translate(-50%, -50%)', // Center the emoji
+          }}
+        >
+          {data.emoji}
+        </motion.div>
+      ))}
     </div>
   )
 }
-
