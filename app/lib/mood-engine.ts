@@ -304,7 +304,16 @@ export class MoodEngine {
 
   private addEmojiParticle(emoji: string, sentiment: number) {
     const id = this.nextParticleId++
-    const y = Math.random() * (this.canvases.emoji?.height || 0)
+    const canvas = this.canvases.emoji
+    if (!canvas) return
+
+    // Convert sentiment from [-1, 1] to [0, 1] for Y positioning
+    // Positive sentiment should be at bottom (higher Y values)
+    const normalizedY = (sentiment + 1) / 2
+
+    // Add some slight randomness to prevent emojis from being exactly in line
+    const randomOffset = (Math.random() - 0.5) * 0.1 // ±5% of screen height
+    const y = canvas.height * (normalizedY + randomOffset)
 
     this.emojiParticles.push({
       type: 'emoji',

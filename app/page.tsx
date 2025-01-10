@@ -8,6 +8,7 @@ import StatusDisplay from './components/StatusDisplay'
 export default function BlueSkyMood() {
   const [mood, setMood] = useState<Mood>({ score: 0, description: 'Neutral' })
   const [stats, setStats] = useState<MoodStats>({
+    totalPosts: 0,
     totalEmojis: 0,
     rawSentiment: 0,
     normalizedScore: 0,
