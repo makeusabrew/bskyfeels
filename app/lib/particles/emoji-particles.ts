@@ -31,6 +31,11 @@ export class EmojiParticleSystem {
       sentiment,
       vx: baseVelocity + velocityVariation,
       vy: (Math.random() - 0.5) * 0.3,
+      variation: {
+        scale: 0.4 + seededRandom(id * 3) * 0.3,
+        rotate: (seededRandom(id * 4) - 0.5) * 45,
+        opacity: 0.6 + seededRandom(id * 5) * 0.3,
+      },
     })
 
     if (this.particles.length > 200) {
@@ -57,22 +62,10 @@ export class EmojiParticleSystem {
 
   render(ctx: CanvasRenderingContext2D) {
     this.particles.forEach((particle) => {
-      const variation = {
-        scale: 0.4 + seededRandom(particle.id * 3) * 0.3, // Smaller base scale
-        rotate: (seededRandom(particle.id * 4) - 0.5) * 45, // More rotation
-        opacity: 0.6 + seededRandom(particle.id * 5) * 0.3,
-      }
-
       ctx.save()
       ctx.translate(particle.x, particle.y)
-      ctx.rotate((variation.rotate * Math.PI) / 180)
-      ctx.scale(variation.scale, variation.scale)
-
-      // Add shadow for depth
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.15)'
-      ctx.shadowBlur = 3
-      ctx.shadowOffsetX = 1
-      ctx.shadowOffsetY = 1
+      ctx.rotate((particle.variation.rotate * Math.PI) / 180)
+      ctx.scale(particle.variation.scale, particle.variation.scale)
 
       // Apply color tint based on vertical position
       const verticalPosition = particle.y / this.canvas.height
@@ -84,17 +77,12 @@ export class EmojiParticleSystem {
         ctx.fillStyle = 'rgba(239, 68, 68, 0.15)'
       }
 
-      // Draw a subtle glow behind the emoji
-      ctx.beginPath()
-      ctx.arc(0, 0, 12, 0, Math.PI * 2)
-      ctx.fill()
-
       // Draw the emoji
-      ctx.globalAlpha = variation.opacity
-      ctx.font = '18px Arial' // Smaller font size
+      ctx.globalAlpha = particle.variation.opacity
+      ctx.font = '18px Arial'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.fillStyle = '#fff' // Reset fill style for the emoji
+      ctx.fillStyle = '#fff'
       ctx.fillText(particle.emoji, 0, 0)
 
       ctx.restore()

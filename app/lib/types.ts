@@ -22,6 +22,11 @@ export interface EmojiParticle extends BaseParticle {
   type: 'emoji'
   emoji: string
   sentiment: number
+  variation: {
+    scale: number
+    rotate: number
+    opacity: number
+  }
 }
 
 export type Particle = BackgroundParticle | EmojiParticle
