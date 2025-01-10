@@ -122,6 +122,7 @@ const emojis: [string, number][] = [
 ]
 
 export interface MoodStats {
+  totalPosts: number
   totalEmojis: number
   rawSentiment: number
   normalizedScore: number
@@ -177,6 +178,7 @@ export class MoodEngine {
     'wss://jetstream1.us-west.bsky.network',
     'wss://jetstream2.us-west.bsky.network',
   ]
+  private totalPostsProcessed = 0
 
   constructor(onMoodUpdate?: (mood: Mood) => void) {
     this.onMoodUpdate = onMoodUpdate
@@ -239,6 +241,7 @@ export class MoodEngine {
       event.commit.collection === 'app.bsky.feed.post' &&
       event.commit.record.text
     ) {
+      this.totalPostsProcessed++
       const text = event.commit.record.text
       const emojisFound = this.extractEmojis(text)
 
@@ -518,6 +521,7 @@ export class MoodEngine {
   // For debugging/analytics
   getMoodStats(): MoodStats {
     return {
+      totalPosts: this.totalPostsProcessed,
       totalEmojis: this.totalEmojisProcessed,
       rawSentiment: this.rawSentiment,
       normalizedScore: this.mood.score,
