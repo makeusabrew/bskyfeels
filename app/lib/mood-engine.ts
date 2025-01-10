@@ -327,8 +327,8 @@ export class MoodEngine {
       vy: (Math.random() - 0.5) * 0.2,
     })
 
-    if (this.emojiParticles.length > 100) {
-      this.emojiParticles = this.emojiParticles.slice(-100)
+    if (this.emojiParticles.length > 200) {
+      this.emojiParticles = this.emojiParticles.slice(-200)
     }
   }
 

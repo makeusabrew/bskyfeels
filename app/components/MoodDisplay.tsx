@@ -16,33 +16,7 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
 
   return (
     <div className="relative">
-      {/* Background glow effect */}
-      <motion.div
-        className="absolute inset-0 blur-3xl opacity-30"
-        animate={{
-          background: [
-            `radial-gradient(circle, ${
-              mood.score > 0 ? 'rgba(255,255,0,0.2)' : 'rgba(0,0,255,0.2)'
-            } 0%, transparent 70%)`,
-            `radial-gradient(circle, ${
-              mood.score > 0 ? 'rgba(255,200,0,0.2)' : 'rgba(100,0,255,0.2)'
-            } 0%, transparent 70%)`,
-          ],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          repeatType: 'reverse',
-        }}
-      />
-
-      <motion.div
-        className="text-center text-white relative"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {/* Title with floating animation */}
+      <div className="text-center text-white relative">
         <motion.h1
           className="text-6xl font-bold mb-8 text-shadow-lg tracking-tight"
           animate={{ y: [0, -8, 0] }}
@@ -56,41 +30,14 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
           <span className="opacity-70">...</span>
         </motion.h1>
 
-        {/* Mood description with dynamic colors and spring animation */}
-        <motion.div
-          className="relative inline-block"
-          key={mood.description}
-          initial={{ opacity: 0, scale: 0.5, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 400,
-            damping: 25,
-            mass: 1,
-          }}
+        <h2
+          className={`text-8xl font-extrabold bg-gradient-to-r ${getColorScheme(
+            mood.score
+          )} bg-clip-text text-transparent px-4 py-2 tracking-tight`}
         >
-          {/* Background blur for text */}
-          <motion.div
-            className="absolute inset-0 blur-xl opacity-30"
-            animate={{
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-          />
-
-          <h2
-            className={`text-8xl font-extrabold bg-gradient-to-r ${getColorScheme(
-              mood.score
-            )} bg-clip-text text-transparent px-4 py-2 tracking-tight`}
-          >
-            {mood.description}
-          </h2>
-        </motion.div>
-      </motion.div>
+          {mood.description}
+        </h2>
+      </div>
     </div>
   )
 }
