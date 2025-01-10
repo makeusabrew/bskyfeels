@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { MoodEngine, type Mood, type MoodStats } from './lib/mood-engine'
+import { MoodEngine } from './lib/mood-engine'
+import { Mood, MoodStats } from './lib/types'
 import MoodDisplay from './components/MoodDisplay'
 import StatusDisplay from './components/StatusDisplay'
 
