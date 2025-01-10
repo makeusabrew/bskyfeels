@@ -100,7 +100,7 @@ export class MoodEngine {
             const [emoji, sentiment] = emojiData
             const newMood = this.moodCalculator.updateMood(sentiment)
             this.onMoodUpdate?.(newMood)
-            this.emojiParticles?.addParticle(emoji, sentiment)
+            this.emojiParticles?.addParticle(emoji, sentiment, event.did, event.commit?.rkey || '')
           }
         })
       }
@@ -122,6 +122,9 @@ export class MoodEngine {
     }
     this.jetstreamConnection.disconnect()
     window.removeEventListener('resize', this.handleResize)
+
+    // Clean up particle systems
+    this.emojiParticles?.cleanup()
 
     // Save one last time before cleanup
     const currentMood = this.moodCalculator.getCurrentMood()

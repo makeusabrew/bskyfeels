@@ -4,10 +4,70 @@ import { handleVerticalBounce, randomVelocityChange, seededRandom } from './util
 export class EmojiParticleSystem {
   private particles: EmojiParticle[] = []
   private nextParticleId = 0
+  private hoveredParticle: EmojiParticle | null = null
+  private canvas: HTMLCanvasElement
+  private mouseX = 0
+  private mouseY = 0
+  private boundHandleMouseMove: (e: MouseEvent) => void
+  private boundHandleClick: (e: MouseEvent) => void
 
-  constructor(private canvas: HTMLCanvasElement) {}
+  constructor(canvas: HTMLCanvasElement) {
+    this.canvas = canvas
+    // Bind event handlers once
+    this.boundHandleMouseMove = this.handleMouseMove.bind(this)
+    this.boundHandleClick = this.handleClick.bind(this)
+    this.setupEventListeners()
+  }
 
-  addParticle(emoji: string, sentiment: number) {
+  private setupEventListeners() {
+    // Remove any existing listeners first
+    this.cleanup()
+
+    // Ensure the canvas can receive pointer events
+    this.canvas.style.pointerEvents = 'auto'
+
+    // Add new listeners
+    this.canvas.addEventListener('mousemove', this.boundHandleMouseMove)
+    this.canvas.addEventListener('click', this.boundHandleClick)
+    this.canvas.style.cursor = 'default'
+  }
+
+  private handleMouseMove = (e: MouseEvent) => {
+    const rect = this.canvas.getBoundingClientRect()
+    this.mouseX = e.clientX - rect.left
+    this.mouseY = e.clientY - rect.top
+
+    const hoveredParticle = this.findHoveredParticle()
+
+    if (hoveredParticle !== this.hoveredParticle) {
+      this.hoveredParticle = hoveredParticle
+      this.canvas.style.cursor = hoveredParticle ? 'pointer' : 'default'
+    }
+  }
+
+  private handleClick = (e: MouseEvent) => {
+    const hoveredParticle = this.findHoveredParticle()
+    if (hoveredParticle) {
+      const url = `https://bsky.app/profile/${hoveredParticle.post.authorId}/post/${hoveredParticle.post.postId}`
+      window.open(url, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  private findHoveredParticle(): EmojiParticle | null {
+    // Check particles in reverse order (top to bottom visually)
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const particle = this.particles[i]
+      const size = 18 * particle.variation.scale // Base font size * scale
+      const hitboxSize = size * 2 // Larger hitbox for better UX
+
+      if (Math.abs(this.mouseX - particle.x) < hitboxSize && Math.abs(this.mouseY - particle.y) < hitboxSize) {
+        return particle
+      }
+    }
+    return null
+  }
+
+  addParticle(emoji: string, sentiment: number, authorId: string, postId: string) {
     const id = this.nextParticleId++
 
     // Convert sentiment from [-1, 1] to [0, 1] for Y positioning
@@ -35,6 +95,10 @@ export class EmojiParticleSystem {
         scale: 0.4 + seededRandom(id * 3) * 0.3,
         rotate: (seededRandom(id * 4) - 0.5) * 45,
         opacity: 0.6 + seededRandom(id * 5) * 0.3,
+      },
+      post: {
+        authorId,
+        postId,
       },
     })
 
@@ -77,8 +141,8 @@ export class EmojiParticleSystem {
         ctx.fillStyle = 'rgba(239, 68, 68, 0.15)'
       }
 
-      // Draw the emoji
-      ctx.globalAlpha = particle.variation.opacity
+      // Draw the emoji with hover effect
+      ctx.globalAlpha = particle.variation.opacity * (particle === this.hoveredParticle ? 1 : 0.8)
       ctx.font = '18px Arial'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -87,5 +151,13 @@ export class EmojiParticleSystem {
 
       ctx.restore()
     })
+  }
+
+  cleanup() {
+    if (!this.canvas) return
+    this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove)
+    this.canvas.removeEventListener('click', this.boundHandleClick)
+    this.canvas.style.cursor = 'default'
+    this.hoveredParticle = null
   }
 }

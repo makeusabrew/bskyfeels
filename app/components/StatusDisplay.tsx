@@ -78,7 +78,7 @@ export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDispla
         <div className="flex items-center gap-2">
           <span className="w-20">Emojis:</span>
           <span>{stats.totalEmojis.toLocaleString()}</span>
-          <span className="text-xs opacity-50">({emojiPercentage.toFixed(1)}% of posts)</span>
+          {/* <span className="text-xs opacity-50">({emojiPercentage.toFixed(1)}% of posts)</span> */}
         </div>
         <div className="flex items-center gap-2">
           <span className="w-20">Positive:</span>

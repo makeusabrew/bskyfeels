@@ -79,19 +79,20 @@ export default function BlueSkyMood() {
 
   return (
     <div className="h-screen w-screen overflow-hidden relative bg-stone-800">
-      <canvas ref={backgroundRef} className="absolute inset-0 z-0" />
-      <canvas ref={waveRef} className="absolute inset-0 z-10" />
+      <canvas ref={backgroundRef} className="absolute inset-0 z-0 pointer-events-none" />
+      <canvas ref={waveRef} className="absolute inset-0 z-10 pointer-events-none" />
       <canvas ref={emojiRef} className="absolute inset-0 z-20" />
 
-      <div className="absolute inset-0 z-30">
+      <div className="absolute inset-0 z-30 pointer-events-none">
         <div className="flex flex-col items-center justify-center h-full">
           <MoodDisplay mood={mood} />
         </div>
-
-        <StatusDisplay stats={stats} wsStatus={wsStatus} onReset={handleReset} />
       </div>
+      <div className="relative z-40">
+        <StatusDisplay stats={stats} wsStatus={wsStatus} onReset={handleReset} />
 
-      <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
+        <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
+      </div>
 
       {/* Attribution */}
       <a
@@ -100,7 +101,7 @@ export default function BlueSkyMood() {
         rel="noopener noreferrer"
         className="fixed bottom-4 right-4 z-50 text-sm text-white/50 hover:text-white/90 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/10 px-3 py-1.5 rounded-full"
       >
-        <span>by @makeusabrew</span>
+        <span>@makeusabrew</span>
       </a>
     </div>
   )

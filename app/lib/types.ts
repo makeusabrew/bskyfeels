@@ -27,6 +27,10 @@ export interface EmojiParticle extends BaseParticle {
     rotate: number
     opacity: number
   }
+  post: {
+    authorId: string
+    postId: string
+  }
 }
 
 export type Particle = BackgroundParticle | EmojiParticle
@@ -49,6 +53,7 @@ export interface JetstreamEvent {
   commit?: {
     operation: string
     collection: string
+    rkey?: string
     record: {
       $type: string
       text?: string
