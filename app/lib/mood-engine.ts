@@ -5,6 +5,7 @@ import { EmojiParticleSystem } from './particles/emoji-particles'
 import { WaveRenderer } from './renderers/wave-renderer'
 import { MoodCalculator } from './mood-calculator'
 import { JetstreamConnection } from './jetstream'
+import { loadStats, saveStats, clearStats } from './storage'
 
 export class MoodEngine {
   private backgroundParticles: BackgroundParticleSystem | null = null
@@ -15,16 +16,30 @@ export class MoodEngine {
   private animationFrame: number | null = null
   private canvases!: CanvasRefs
   private onMoodUpdate?: (mood: Mood) => void
+  private saveInterval: number | null = null
 
   constructor(onMoodUpdate?: (mood: Mood) => void, onWebSocketStatusChange?: (status: WebSocketStatus) => void) {
     this.onMoodUpdate = onMoodUpdate
     this.moodCalculator = new MoodCalculator()
-    this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent, onWebSocketStatusChange)
 
-    // Initialize with neutral mood
-    if (onMoodUpdate) {
-      onMoodUpdate(this.moodCalculator.getCurrentMood())
+    // Try to restore previous stats
+    const savedStats = loadStats()
+    if (savedStats) {
+      this.moodCalculator.restoreStats({
+        totalPosts: savedStats.totalPosts,
+        totalEmojis: savedStats.totalEmojis,
+        rawSentiment: savedStats.rawSentiment,
+        positiveCount: savedStats.positiveCount,
+        neutralCount: savedStats.neutralCount,
+        negativeCount: savedStats.negativeCount,
+      })
+      // Update UI with restored mood
+      if (onMoodUpdate) {
+        onMoodUpdate(savedStats.mood)
+      }
     }
+
+    this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent, onWebSocketStatusChange)
   }
 
   init(canvasRefs: CanvasRefs) {
@@ -55,6 +70,13 @@ export class MoodEngine {
     // Start systems
     this.jetstreamConnection.connect()
     this.startAnimation()
+
+    // Set up periodic saving
+    this.saveInterval = window.setInterval(() => {
+      const currentMood = this.moodCalculator.getCurrentMood()
+      const stats = this.moodCalculator.getMoodStats()
+      saveStats(currentMood, stats)
+    }, 3000) // Save every 3 seconds
 
     return () => this.cleanup()
   }
@@ -95,8 +117,16 @@ export class MoodEngine {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame)
     }
+    if (this.saveInterval) {
+      clearInterval(this.saveInterval)
+    }
     this.jetstreamConnection.disconnect()
     window.removeEventListener('resize', this.handleResize)
+
+    // Save one last time before cleanup
+    const currentMood = this.moodCalculator.getCurrentMood()
+    const stats = this.moodCalculator.getMoodStats()
+    saveStats(currentMood, stats)
   }
 
   private handleResize = () => {
@@ -158,5 +188,12 @@ export class MoodEngine {
   // For debugging/analytics
   getMoodStats() {
     return this.moodCalculator.getMoodStats()
+  }
+
+  reset() {
+    this.moodCalculator.reset()
+    clearStats()
+    const newMood = this.moodCalculator.getCurrentMood()
+    this.onMoodUpdate?.(newMood)
   }
 }

@@ -5,9 +5,10 @@ import type { MoodStats, WebSocketStatus } from '../lib/types'
 interface StatusDisplayProps {
   stats: MoodStats
   wsStatus?: WebSocketStatus
+  onReset?: () => void
 }
 
-export default function StatusDisplay({ stats, wsStatus }: StatusDisplayProps) {
+export default function StatusDisplay({ stats, wsStatus, onReset }: StatusDisplayProps) {
   const emojiPercentage = stats.totalPosts > 0 ? (stats.totalEmojis / stats.totalPosts) * 100 : 0
   const positivePercentage = stats.totalEmojis > 0 ? (stats.positiveCount / stats.totalEmojis) * 100 : 0
   const neutralPercentage = stats.totalEmojis > 0 ? (stats.neutralCount / stats.totalEmojis) * 100 : 0
@@ -16,8 +17,8 @@ export default function StatusDisplay({ stats, wsStatus }: StatusDisplayProps) {
   return (
     <div className="fixed bottom-4 right-4 sm:right-auto left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 font-mono text-sm text-white/80">
       <div className="space-y-1">
-        {wsStatus && (
-          <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
             <span className="w-20">WebSocket:</span>
             <span
               className={`capitalize ${
@@ -31,7 +32,30 @@ export default function StatusDisplay({ stats, wsStatus }: StatusDisplayProps) {
               {wsStatus}
             </span>
           </div>
-        )}
+          {onReset && (
+            <button
+              onClick={onReset}
+              className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
+              title="Reset all statistics"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="opacity-50 hover:opacity-100 transition-opacity"
+              >
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+            </button>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           <span className="w-20">Mood:</span>
           <span

@@ -24,6 +24,13 @@ export default function BlueSkyMood() {
   const emojiRef = useRef<HTMLCanvasElement>(null)
   const engineRef = useRef<MoodEngine>()
 
+  const handleReset = () => {
+    if (engineRef.current) {
+      engineRef.current.reset()
+      setStats(engineRef.current.getMoodStats())
+    }
+  }
+
   useEffect(() => {
     if (!backgroundRef.current || !waveRef.current || !emojiRef.current) return
 
@@ -57,7 +64,7 @@ export default function BlueSkyMood() {
           <MoodDisplay mood={mood} />
         </div>
 
-        <StatusDisplay stats={stats} wsStatus={wsStatus} />
+        <StatusDisplay stats={stats} wsStatus={wsStatus} onReset={handleReset} />
       </div>
     </div>
   )
