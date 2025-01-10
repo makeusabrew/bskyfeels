@@ -18,7 +18,7 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
     <div className="relative">
       <div className="text-center text-white relative">
         <motion.h1
-          className="text-6xl font-bold mb-4 sm:mb-8 text-shadow-lg tracking-tight"
+          className="text-5xl sm:text-6xl font-bold mb-4 sm:mb-8 text-shadow-lg tracking-tight"
           animate={{ y: [0, -8, 0] }}
           transition={{
             duration: 4,
@@ -26,12 +26,12 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
             ease: 'easeInOut',
           }}
         >
-          <span className="opacity-80">Bluesky is</span> <span className="opacity-90">feeling</span>
-          <span className="opacity-70">...</span>
+          <span className="opacity-80">Bluesky</span>&nbsp;<span className="opacity-90">feels</span>
+          {/* <span className="opacity-70">...</span> */}
         </motion.h1>
 
         <h2
-          className={`text-8xl font-extrabold bg-gradient-to-r ${getColorScheme(
+          className={`text-7xl sm:text-8xl font-extrabold bg-gradient-to-r ${getColorScheme(
             mood.score
           )} bg-clip-text text-transparent px-4 py-2 tracking-tight`}
         >
