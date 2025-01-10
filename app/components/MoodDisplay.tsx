@@ -30,13 +30,19 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
           {/* <span className="opacity-70">...</span> */}
         </motion.h1>
 
-        <h2
+        <motion.h2
           className={`text-7xl sm:text-8xl font-extrabold bg-gradient-to-r ${getColorScheme(
             mood.score
           )} bg-clip-text text-transparent px-4 py-2 tracking-tight`}
+          animate={{ y: [8, 0, 8] }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
         >
           {mood.description}
-        </h2>
+        </motion.h2>
       </div>
     </div>
   )
