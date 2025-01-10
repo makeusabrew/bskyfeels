@@ -121,6 +121,16 @@ const emojis: [string, number][] = [
   ['🤕', -0.6], // Negative
 ]
 
+export interface MoodStats {
+  totalEmojis: number
+  rawSentiment: number
+  normalizedScore: number
+  description: string
+  positiveCount: number
+  neutralCount: number
+  negativeCount: number
+}
+
 export class MoodEngine {
   private ws!: WebSocket // Using definite assignment assertion
   private mood: Mood = { score: 0, description: 'Neutral' }
@@ -139,6 +149,11 @@ export class MoodEngine {
   private emojiParticles: EmojiParticle[] = []
   private nextParticleId = 0
   private currentSentiment = 0 // For smooth wave transitions
+  private totalEmojisProcessed = 0
+  private rawSentiment = 0 // Unbounded accumulated sentiment
+  private positiveCount = 0
+  private neutralCount = 0
+  private negativeCount = 0
 
   constructor(onMoodUpdate?: (mood: Mood) => void) {
     this.onMoodUpdate = onMoodUpdate
@@ -198,6 +213,7 @@ export class MoodEngine {
 
   private handleMessage(event: MessageEvent) {
     const data = JSON.parse(event.data)
+    this.totalEmojisProcessed++
     this.updateMood(data)
     this.addEmojiParticle(data.emoji, data.sentiment)
   }
@@ -245,8 +261,23 @@ export class MoodEngine {
   }
 
   private updateMood(data: any) {
-    this.mood.score = this.mood.score * 0.95 + data.sentiment * 0.05
-    this.mood.description = this.getDescriptionFromScore(this.mood.score)
+    // Update raw sentiment (unbounded)
+    this.rawSentiment += data.sentiment
+
+    // Update counts
+    if (data.sentiment > 0.1) this.positiveCount++
+    else if (data.sentiment < -0.1) this.negativeCount++
+    else this.neutralCount++
+
+    // Calculate normalized score for display/rendering
+    // Using tanh to smoothly constrain to -1...+1 range while allowing extremes
+    const normalizedScore = Math.tanh(this.rawSentiment / Math.max(20, this.totalEmojisProcessed))
+
+    this.mood = {
+      score: normalizedScore,
+      description: this.getDescriptionFromScore(normalizedScore),
+    }
+
     this.onMoodUpdate?.(this.mood)
   }
 
@@ -422,5 +453,18 @@ export class MoodEngine {
     if (score > -0.3) return 'Uneasy'
     if (score > -0.5) return 'Sad'
     return 'Gloomy'
+  }
+
+  // For debugging/analytics
+  getMoodStats(): MoodStats {
+    return {
+      totalEmojis: this.totalEmojisProcessed,
+      rawSentiment: this.rawSentiment,
+      normalizedScore: this.mood.score,
+      description: this.mood.description,
+      positiveCount: this.positiveCount,
+      neutralCount: this.neutralCount,
+      negativeCount: this.negativeCount,
+    }
   }
 }
