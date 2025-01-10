@@ -92,6 +92,16 @@ export default function BlueSkyMood() {
       </div>
 
       <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
+
+      {/* Attribution */}
+      <a
+        href="https://bsky.app/profile/makeusabrew.bsky.social"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-4 right-4 z-50 text-sm text-white/50 hover:text-white/90 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/10 px-3 py-1.5 rounded-full"
+      >
+        <span>by @makeusabrew</span>
+      </a>
     </div>
   )
 }
