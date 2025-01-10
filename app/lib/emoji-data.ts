@@ -105,19 +105,80 @@ export const emojis: [string, number][] = [
   ['💞', 0.9], // Revolving hearts
   ['💕', 0.9], // Two hearts
   ['💝', 0.9], // Heart with ribbon
-  // Hand gestures
-  ['👍', 0.6], // Approval
-  ['👎', -0.6], // Disapproval
-  ['👊', 0.3], // Fist bump
-  ['🤝', 0.7], // Agreement
-  ['🙏', 0.7], // Please/Thank you
-  ['🫂', 0.8], // Hug
-  ['👏', 0.7], // Applause
-  ['🙌', 0.8], // Celebration
-  ['✌️', 0.6], // Peace
-  ['🤟', 0.7], // Love gesture
-  ['🤘', 0.6], // Rock on
-  ['👋', 0.4], // Wave
+  // Hand gestures (including all skin tones)
+  ['👍', 0.6], // Approval (base)
+  ['👍🏻', 0.6], // Light skin tone
+  ['👍🏼', 0.6], // Medium-light skin tone
+  ['👍🏽', 0.6], // Medium skin tone
+  ['👍🏾', 0.6], // Medium-dark skin tone
+  ['👍🏿', 0.6], // Dark skin tone
+
+  ['👎', -0.6], // Disapproval (base)
+  ['👎🏻', -0.6], // Light skin tone
+  ['👎🏼', -0.6], // Medium-light skin tone
+  ['👎🏽', -0.6], // Medium skin tone
+  ['👎🏾', -0.6], // Medium-dark skin tone
+  ['👎🏿', -0.6], // Dark skin tone
+
+  ['👊', 0.3], // Fist bump (base)
+  ['👊🏻', 0.3], // Light skin tone
+  ['👊🏼', 0.3], // Medium-light skin tone
+  ['👊🏽', 0.3], // Medium skin tone
+  ['👊🏾', 0.3], // Medium-dark skin tone
+  ['👊🏿', 0.3], // Dark skin tone
+
+  ['🤝', 0.7], // Agreement (base - mixed)
+
+  ['🙏', 0.7], // Please/Thank you (base)
+  ['🙏🏻', 0.7], // Light skin tone
+  ['🙏🏼', 0.7], // Medium-light skin tone
+  ['🙏🏽', 0.7], // Medium skin tone
+  ['🙏🏾', 0.7], // Medium-dark skin tone
+  ['🙏🏿', 0.7], // Dark skin tone
+
+  ['🫂', 0.8], // Hug (base - mixed)
+
+  ['👏', 0.7], // Applause (base)
+  ['👏🏻', 0.7], // Light skin tone
+  ['👏🏼', 0.7], // Medium-light skin tone
+  ['👏🏽', 0.7], // Medium skin tone
+  ['👏🏾', 0.7], // Medium-dark skin tone
+  ['👏🏿', 0.7], // Dark skin tone
+
+  ['🙌', 0.8], // Celebration (base)
+  ['🙌🏻', 0.8], // Light skin tone
+  ['🙌🏼', 0.8], // Medium-light skin tone
+  ['🙌🏽', 0.8], // Medium skin tone
+  ['🙌🏾', 0.8], // Medium-dark skin tone
+  ['🙌🏿', 0.8], // Dark skin tone
+
+  ['✌️', 0.6], // Peace (base)
+  ['✌🏻', 0.6], // Light skin tone
+  ['✌🏼', 0.6], // Medium-light skin tone
+  ['✌🏽', 0.6], // Medium skin tone
+  ['✌🏾', 0.6], // Medium-dark skin tone
+  ['✌🏿', 0.6], // Dark skin tone
+
+  ['🤟', 0.7], // Love gesture (base)
+  ['🤟🏻', 0.7], // Light skin tone
+  ['🤟🏼', 0.7], // Medium-light skin tone
+  ['🤟🏽', 0.7], // Medium skin tone
+  ['🤟🏾', 0.7], // Medium-dark skin tone
+  ['🤟🏿', 0.7], // Dark skin tone
+
+  ['🤘', 0.6], // Rock on (base)
+  ['🤘🏻', 0.6], // Light skin tone
+  ['🤘🏼', 0.6], // Medium-light skin tone
+  ['🤘🏽', 0.6], // Medium skin tone
+  ['🤘🏾', 0.6], // Medium-dark skin tone
+  ['🤘🏿', 0.6], // Dark skin tone
+
+  ['👋', 0.4], // Wave (base)
+  ['👋🏻', 0.4], // Light skin tone
+  ['👋🏼', 0.4], // Medium-light skin tone
+  ['👋🏽', 0.4], // Medium skin tone
+  ['👋🏾', 0.4], // Medium-dark skin tone
+  ['👋🏿', 0.4], // Dark skin tone
   // Additional expressions
   ['🥹', 0.4], // Holding back tears (happy)
   ['🫠', 0.2], // Melting face
