@@ -83,16 +83,15 @@ export default function BlueSkyMood() {
       <canvas ref={waveRef} className="absolute inset-0 z-10 pointer-events-none" />
       <canvas ref={emojiRef} className="absolute inset-0 z-20" />
 
-      <div className="absolute inset-0 z-30 pointer-events-none">
-        <div className="flex flex-col items-center justify-center h-full">
-          <MoodDisplay mood={mood} />
-        </div>
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+        <MoodDisplay mood={mood} />
       </div>
+
       <div className="relative z-40">
         <StatusDisplay stats={stats} wsStatus={wsStatus} onReset={handleReset} />
-
-        <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
       </div>
+
+      <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
 
       {/* Attribution */}
       <a

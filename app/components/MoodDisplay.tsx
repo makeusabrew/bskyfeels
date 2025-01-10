@@ -18,7 +18,7 @@ export default function MoodDisplay({ mood }: MoodDisplayProps) {
     <div className="relative">
       <div className="text-center text-white relative">
         <motion.h1
-          className="text-6xl font-bold mb-8 text-shadow-lg tracking-tight"
+          className="text-6xl font-bold mb-4 sm:mb-8 text-shadow-lg tracking-tight"
           animate={{ y: [0, -8, 0] }}
           transition={{
             duration: 4,
