@@ -131,6 +131,21 @@ export interface MoodStats {
   negativeCount: number
 }
 
+interface JetstreamEvent {
+  did: string
+  time_us: number
+  kind: string
+  commit?: {
+    operation: string
+    collection: string
+    record: {
+      $type: string
+      text?: string
+      // ... other fields we don't care about
+    }
+  }
+}
+
 export class MoodEngine {
   private ws!: WebSocket // Using definite assignment assertion
   private mood: Mood = { score: 0, description: 'Neutral' }
@@ -154,6 +169,14 @@ export class MoodEngine {
   private positiveCount = 0
   private neutralCount = 0
   private negativeCount = 0
+  private wsRetryCount = 0
+  private readonly MAX_RETRIES = 3
+  private readonly JETSTREAM_URLS = [
+    'wss://jetstream1.us-east.bsky.network',
+    'wss://jetstream2.us-east.bsky.network',
+    'wss://jetstream1.us-west.bsky.network',
+    'wss://jetstream2.us-west.bsky.network',
+  ]
 
   constructor(onMoodUpdate?: (mood: Mood) => void) {
     this.onMoodUpdate = onMoodUpdate
@@ -162,7 +185,7 @@ export class MoodEngine {
   init(canvasRefs: { background: HTMLCanvasElement; wave: HTMLCanvasElement; emoji: HTMLCanvasElement }) {
     this.canvases = canvasRefs
 
-    // Initialize all canvases to full viewport size
+    // Initialize canvases
     Object.values(this.canvases).forEach((canvas) => {
       if (!canvas) return
       const resizeCanvas = () => {
@@ -176,30 +199,74 @@ export class MoodEngine {
       window.addEventListener('resize', resizeCanvas)
     })
 
-    // Initialize background particles
     this.initBackgroundParticles()
-
-    // Simulate WebSocket with interval
-    // TODO: Replace with actual WebSocket connection
-    this.ws = setInterval(() => {
-      const [emoji, sentiment] = emojis[Math.floor(Math.random() * emojis.length)]
-      this.handleMessage({
-        data: JSON.stringify({
-          emoji,
-          sentiment,
-        }),
-      } as any)
-    }, 1000) as any
-
+    this.connectToJetstream()
     this.startAnimation()
+
     return () => this.cleanup()
+  }
+
+  private connectToJetstream() {
+    const url = `${this.JETSTREAM_URLS[this.wsRetryCount]}/subscribe?wantedCollections=app.bsky.feed.post`
+
+    this.ws = new WebSocket(url)
+
+    this.ws.onmessage = (event) => {
+      try {
+        const jetstreamEvent = JSON.parse(event.data) as JetstreamEvent
+        this.handleJetstreamEvent(jetstreamEvent)
+      } catch (error) {
+        console.error('Error processing message:', error)
+      }
+    }
+
+    this.ws.onclose = () => {
+      console.log('WebSocket closed, attempting reconnect...')
+      this.wsRetryCount = (this.wsRetryCount + 1) % this.JETSTREAM_URLS.length
+      setTimeout(() => this.connectToJetstream(), 1000)
+    }
+
+    this.ws.onerror = (error) => {
+      console.error('WebSocket error:', error)
+      this.ws?.close()
+    }
+  }
+
+  private handleJetstreamEvent(event: JetstreamEvent) {
+    if (
+      event.kind === 'commit' &&
+      event.commit?.operation === 'create' &&
+      event.commit.collection === 'app.bsky.feed.post' &&
+      event.commit.record.text
+    ) {
+      const text = event.commit.record.text
+      const emojisFound = this.extractEmojis(text)
+
+      if (emojisFound.length > 0) {
+        // Process each emoji found in the post
+        emojisFound.forEach((foundEmoji) => {
+          const emojiData = emojis.find(([emoji]) => emoji === foundEmoji)
+          if (emojiData) {
+            this.totalEmojisProcessed++
+            this.updateMood({ emoji: emojiData[0], sentiment: emojiData[1] })
+            this.addEmojiParticle(emojiData[0], emojiData[1])
+          }
+        })
+      }
+    }
+  }
+
+  private extractEmojis(text: string): string[] {
+    // Unicode ranges for emojis
+    const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu
+    return Array.from(new Set(text.match(emojiRegex) || []))
   }
 
   private cleanup() {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame)
     }
-    clearInterval(this.ws as any)
+    this.ws?.close()
     window.removeEventListener('resize', this.handleResize)
   }
 
@@ -209,13 +276,6 @@ export class MoodEngine {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
     })
-  }
-
-  private handleMessage(event: MessageEvent) {
-    const data = JSON.parse(event.data)
-    this.totalEmojisProcessed++
-    this.updateMood(data)
-    this.addEmojiParticle(data.emoji, data.sentiment)
   }
 
   private initBackgroundParticles() {
