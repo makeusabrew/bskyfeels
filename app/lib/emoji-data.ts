@@ -86,4 +86,63 @@ export const emojis: [string, number][] = [
   ['😷', -0.2], // Slightly negative
   ['🤒', -0.5], // Negative
   ['🤕', -0.6], // Negative
+  // Hearts and Love
+  ['❤️', 0.9], // Love
+  ['🧡', 0.8], // Love
+  ['💛', 0.8], // Love
+  ['💚', 0.8], // Love
+  ['💙', 0.8], // Love
+  ['💜', 0.8], // Love
+  ['🖤', 0.4], // Edgy love
+  ['🤍', 0.7], // Pure love
+  ['🤎', 0.7], // Love
+  ['💔', -0.8], // Heartbreak
+  ['❤️‍🔥', 0.9], // Passionate love
+  ['❤️‍🩹', 0.3], // Healing love
+  ['💖', 0.9], // Sparkling love
+  ['💗', 0.8], // Growing love
+  ['💓', 0.8], // Beating love
+  ['💞', 0.9], // Revolving hearts
+  ['💕', 0.9], // Two hearts
+  ['💝', 0.9], // Heart with ribbon
+  // Hand gestures
+  ['👍', 0.6], // Approval
+  ['👎', -0.6], // Disapproval
+  ['👊', 0.3], // Fist bump
+  ['🤝', 0.7], // Agreement
+  ['🙏', 0.7], // Please/Thank you
+  ['🫂', 0.8], // Hug
+  ['👏', 0.7], // Applause
+  ['🙌', 0.8], // Celebration
+  ['✌️', 0.6], // Peace
+  ['🤟', 0.7], // Love gesture
+  ['🤘', 0.6], // Rock on
+  ['👋', 0.4], // Wave
+  // Additional expressions
+  ['🥹', 0.4], // Holding back tears (happy)
+  ['🫠', 0.2], // Melting face
+  ['🫡', 0.3], // Saluting face
+  ['🫢', 0.2], // Peeking eye
+  ['🫣', 0.1], // Covering eyes
+  ['🥲', 0.2], // Smiling through pain
+  // Animals often used for reactions
+  ['🦋', 0.6], // Butterfly (positive transformation)
+  ['🐛', 0.2], // Bug (small/cute)
+  ['🦄', 0.8], // Unicorn (magical/special)
+  ['🐥', 0.6], // Baby chick (cute)
+  // Nature and weather moods
+  ['✨', 0.7], // Sparkles
+  ['💫', 0.6], // Dizzy
+  ['⭐', 0.7], // Star
+  ['🌟', 0.8], // Glowing star
+  ['☀️', 0.7], // Sun
+  ['🌧️', -0.3], // Rain
+  ['⛈️', -0.5], // Storm
+  // Miscellaneous
+  ['💯', 0.8], // 100 points
+  ['🔥', 0.7], // Fire (hot/awesome)
+  ['💪', 0.7], // Strength
+  ['🎉', 0.9], // Party
+  ['✅', 0.6], // Check mark
+  ['❌', -0.6], // Cross mark
 ]
