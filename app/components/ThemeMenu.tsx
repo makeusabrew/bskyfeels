@@ -16,22 +16,9 @@ export function ThemeMenu({ onThemeChange, currentTheme }: ThemeMenuProps) {
     <div className="fixed top-4 right-4 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-full bg-black/20 backdrop-blur-sm text-white/80 hover:bg-white/20 transition-all"
+        className="px-3 py-1.5 text-sm rounded-md bg-black/20 backdrop-blur-sm text-white/80 hover:bg-white/20 transition-all"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        >
-          <path d="M12 2v1M12 21v1M4.2 4.2l.7.7m12.1 12.1l.7.7M2 12h1m18 0h1M4.2 19.8l.7-.7m12.1-12.1l.7-.7" />
-        </svg>
+        Change theme
       </button>
 
       {isOpen && (

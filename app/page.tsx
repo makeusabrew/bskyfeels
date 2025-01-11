@@ -27,7 +27,6 @@ export default function BlueSkyMood() {
   const waveRef = useRef<HTMLCanvasElement>(null)
   const emojiRef = useRef<HTMLCanvasElement>(null)
   const engineRef = useRef<MoodEngine>()
-  const rendererRef = useRef<WaveRenderer | null>(null)
   const [currentTheme, setCurrentTheme] = useState<WaveThemeName>(() => {
     // Initialize theme from localStorage or fallback to classic
     return loadTheme() || 'classic'
@@ -43,10 +42,6 @@ export default function BlueSkyMood() {
   useEffect(() => {
     if (!backgroundRef.current || !waveRef.current || !emojiRef.current) return
 
-    // Initialize wave renderer first with the current theme
-    rendererRef.current = new WaveRenderer(waveRef.current)
-    rendererRef.current.setTheme(waveThemes[currentTheme])
-
     // Create engine instance with mood update callback
     engineRef.current = new MoodEngine((newMood) => {
       setMood(newMood)
@@ -57,22 +52,19 @@ export default function BlueSkyMood() {
     }, setWsStatus)
 
     // Initialize engine with canvas references and pass the renderer
-    const cleanup = engineRef.current.init(
-      {
-        background: backgroundRef.current,
-        wave: waveRef.current,
-        emoji: emojiRef.current,
-      },
-      rendererRef.current
-    )
+    const cleanup = engineRef.current.init({
+      background: backgroundRef.current,
+      wave: waveRef.current,
+      emoji: emojiRef.current,
+    })
 
     return cleanup
   }, [])
 
   const handleThemeChange = (theme: WaveTheme) => {
-    if (!rendererRef.current) return
+    if (!engineRef.current) return
     const themeName = Object.keys(waveThemes).find((key) => waveThemes[key as WaveThemeName] === theme) as WaveThemeName
-    rendererRef.current.setTheme(theme)
+    engineRef.current.setTheme(theme)
     setCurrentTheme(themeName)
     saveTheme(themeName)
   }

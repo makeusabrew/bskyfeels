@@ -1,4 +1,4 @@
-import { CanvasRefs, JetstreamEvent, Mood, WebSocketStatus } from './types'
+import { CanvasRefs, JetstreamEvent, Mood, WaveTheme, WebSocketStatus } from './types'
 import { emojis } from './emoji-data'
 import { BackgroundParticleSystem } from './particles/background-particles'
 import { EmojiParticleSystem } from './particles/emoji-particles'
@@ -42,7 +42,13 @@ export class MoodEngine {
     this.jetstreamConnection = new JetstreamConnection(this.handleJetstreamEvent, onWebSocketStatusChange)
   }
 
-  init(canvasRefs: CanvasRefs, waveRenderer: WaveRenderer) {
+  setTheme(theme: WaveTheme) {
+    if (this.waveRenderer) {
+      this.waveRenderer.setTheme(theme)
+    }
+  }
+
+  init(canvasRefs: CanvasRefs) {
     this.canvases = canvasRefs
 
     // Initialize systems
@@ -52,9 +58,9 @@ export class MoodEngine {
     if (this.canvases.emoji) {
       this.emojiParticles = new EmojiParticleSystem(this.canvases.emoji)
     }
-
-    // Use the provided WaveRenderer or create a new one
-    this.waveRenderer = waveRenderer
+    if (this.canvases.wave) {
+      this.waveRenderer = new WaveRenderer(this.canvases.wave)
+    }
 
     // Set up resize handlers
     Object.values(this.canvases).forEach((canvas) => {
