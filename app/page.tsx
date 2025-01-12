@@ -58,6 +58,8 @@ export default function BlueSkyMood() {
       emoji: emojiRef.current,
     })
 
+    engineRef.current.setTheme(waveThemes[currentTheme])
+
     return cleanup
   }, [])
 
@@ -86,14 +88,24 @@ export default function BlueSkyMood() {
       <ThemeMenu currentTheme={currentTheme} onThemeChange={handleThemeChange} />
 
       {/* Attribution */}
-      <a
-        href="https://bsky.app/profile/makeusabrew.bsky.social"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed top-4 left-4 z-50 text-sm text-white/60 hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-md"
-      >
-        <span>@makeusabrew</span>
-      </a>
+      <div className="fixed top-4 left-4 z-50 flex items-center gap-4">
+        <a
+          href="https://bsky.app/profile/makeusabrew.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-white/60 hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-md"
+        >
+          <span>@makeusabrew</span>
+        </a>
+        <a
+          href="https://github.com/makeusabrew/bskyfeels/tree/main?tab=readme-ov-file#readme"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-white/60 hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-md"
+        >
+          <span>About</span>
+        </a>
+      </div>
     </div>
   )
 }
