@@ -11,7 +11,7 @@
   "dependencies": {
     "autoprefixer": "^10.4.20",
     "framer-motion": "latest",
-    "next": "14.2.16",
+    "next": "^14.2.23",
     "react": "^18",
     "react-dom": "^18",
     "tailwindcss-animate": "^1.0.7"
