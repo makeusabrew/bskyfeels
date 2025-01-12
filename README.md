@@ -2,7 +2,8 @@
 
 Unscientific sentiment analysis of the Bluesky firehose to visualise the mood on Bluesky, in realtime, direct from your browser:
 
-<img width="1110" alt="image" src="https://github.com/user-attachments/assets/b659a54d-5fb0-4120-bdc1-51468b91dc6b" />
+<img width="1151" alt="image" src="https://github.com/user-attachments/assets/6a4527c0-d434-4b36-b20c-ac7d9c9b6e35" />
+
 
 ## How it works
 
